@@ -1,0 +1,22 @@
+/* All of the movies queries */
+/* Dataset has id, name, release_year, rating, runtime */
+movies = load '/user/cloudera/pig/movies_data.csv' using PigStorage(',') as (id: long, name: chararray, year: int, rating: float, runtime: long);
+/* List the movies having a rating greater than 4 */
+rating4 = filter movies by rating > 4;
+dump rating4;
+
+/* List the movies that were released between 1950 and 1960 */
+moviesbetween = filter movies by year > 1950 and year < 1960;
+dump moviesbetween;
+
+/* List the movies that start with the Alpahbet A */
+moviesA = filter movies by name matches 'A.*';
+dump moviesA;
+
+/* List the movie names and its duration in minutes */
+moviesdm = foreach movies generate name, (double)(runtime/60);
+dump moviesdm;
+
+/* Get sample set from your data */
+movsamp = sample movies 0.1; -- 0.1 = 10%
+dump movsamp;
